@@ -193,7 +193,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener
                 catch (Exception ex)
                 {
                     // we can't even query for the jobrequest from server, something totally busted, stop agent/worker.
-                    Trace.Error("Catch exception while checking jobrequest status. Cancel running worker right away.");
+                    Trace.Error($"Catch exception while checking jobrequest {jobDispatch.JobId} status. Cancel running worker right away.");
                     Trace.Error(ex);
 
                     jobDispatch.WorkerCancellationTokenSource.Cancel();
@@ -218,14 +218,14 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener
                     {
                         // at this point, the job exectuion might encounter some dead lock and even not able to be canclled.
                         // no need to localize the exception string should never happen.
-                        throw new InvalidOperationException("Job dispatch process has encountered unexpected error, the dispatch task is not able to be canceled within 45 seconds.");
+                        throw new InvalidOperationException($"Job dispatch process for {jobDispatch.JobId} has encountered unexpected error, the dispatch task is not able to be canceled within 45 seconds.");
                     }
                 }
                 else
                 {
                     // something seriously wrong on server side. stop agent from continue running.
                     // no need to localize the exception string should never happen.
-                    throw new InvalidOperationException("Server send a new job request while the previous job request haven't finished.");
+                    throw new InvalidOperationException($"Server send a new job request while the previous job request {jobDispatch.JobId} haven't finished.");
                 }
             }
 
@@ -277,7 +277,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener
                 Guid lockToken = message.LockToken;
 
                 // start renew job request
-                Trace.Info("Start renew job request.");
+                Trace.Info($"Start renew job request for job {message.JobId}.");
                 Task renewJobRequest = RenewJobRequestAsync(_poolId, requestId, lockToken, firstJobRequestRenewed, lockRenewalTokenSource.Token);
 
                 // wait till first renew succeed or job request is canceled
