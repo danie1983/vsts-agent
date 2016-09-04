@@ -86,7 +86,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener.Configuration
             }
 
             Trace.Info("Verifying if the account has LogonAsService permission");
-            if (!_windowsServiceHelper.CheckUserHasLogonAsServicePrivilege(_domainName, _userName))
+            if (_windowsServiceHelper.UserHasLogonAsServicePrivilege(_domainName, _userName))
             {
                 Trace.Info($"Account: {_logonAccount} already has Logon As Service Privilege.");
             }

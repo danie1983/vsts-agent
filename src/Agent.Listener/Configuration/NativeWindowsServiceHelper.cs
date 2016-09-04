@@ -32,7 +32,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener.Configuration
 
         void RemoveGroupFromFolderSecuritySetting(string folderPath, string groupName);
 
-        bool CheckUserHasLogonAsServicePrivilege(string domain, string userName);
+        bool UserHasLogonAsServicePrivilege(string domain, string userName);
 
         bool GrantUserLogonAsServicePrivilage(string domain, string userName);
 
@@ -264,7 +264,7 @@ namespace Microsoft.VisualStudio.Services.Agent.Listener.Configuration
             }
         }
 
-        public bool CheckUserHasLogonAsServicePrivilege(string domain, string userName)
+        public bool UserHasLogonAsServicePrivilege(string domain, string userName)
         {
             Trace.Entering();
 
